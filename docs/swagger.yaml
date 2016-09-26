@@ -15,70 +15,6 @@ basePath: /api/v1
 produces:
   - application/json
 paths:
-  /shipping:
-    get:
-      summary: Get shipping detail and status
-      description: |
-        This endpoint returns the state for the shipping of one object by the seller to the buyer. The seller goes to the transporter station and then uses the tracking code to paste in our system. This endpoint will be a wrapper of that tracking system.
-      parameters:
-        - name: code
-          in: query
-          description: Code of the shipping in our system.
-          required: true
-          type: number
-          format: string
-      tags:
-        - Shipping
-      responses:
-        200:
-          description: A json object with the state of the shipping
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Add a shipping tracking for a given user and transaction
-      description: The current user is logged in, and has the account verified by our system. If the user created one transaction in our system, the seller now must put now the tracking code associated with the transaction.
-      parameters:
-        - name: transaction_id
-          in: query
-          description: The transaction id
-          required: true
-          type: string
-          format: uuid
-        - name: tracking_code
-          in: query
-          description: Tracking code for a given transport company.
-          required: true
-          type: string
-        - name: transport_company
-          in: query
-          type: number
-          format: int
-          description: The tranport company ID in our system.
-      tags:
-        - Shipping
-      responses:
-        200:
-          description: The tracking id in our system
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /shipping/me:
-    get:
-      summary: List of shipping tracking for one user
-      description: |
-        Given a id of user in the system, returns the list of shipping tracking for one user.
-      tags:
-        - Shipping
-      responses:
-        200:
-          description: An array of shipping details for a given user
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
   /transaction:
     get:
       summary: Get details about the transaction of one object between a seller and a buyer
@@ -181,7 +117,7 @@ paths:
       summary: For a given user return the list of transactions of that user in the past
       description: This endpoint returns the list of transactions made in the past by a given user, as a seller or buyer and the stats of that transactions.
       parameters:
-        - name: user
+        - name: user_uuid
           in: query
           type: string
           format: uuid
@@ -232,7 +168,7 @@ paths:
           type: number
           format: float
           description: The object price
-        - name: state
+        - name: url
           in: query
           type: string
           description: The object state, a small text explain the state of the object, this is important for certify the object or if there is a problem with the transaction
@@ -240,7 +176,7 @@ paths:
         - Objects
       responses:
         200:
-          description: The list of object for a given user
+          description: The object id
         default:
           description: Unexpected error
           schema:
