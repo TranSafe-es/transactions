@@ -18,12 +18,12 @@ class Transactions(models.Model):
     COMPLETED = "Completed"
 
     STATE = (
-        (AWAITING_SELLER_CONFIRMATION, "Awating seller confirmation"),
-        (AWAITING_PAYMENT, "Awaiting payment"),
-        (AWAITING_SHIPPING, "Awaiting shipping"),
-        (SHIPPED, "Shipped"),
-        (REFUND, "Refund"),
-        (COMPLETED, "Completed"),
+        ("AWAITING_SELLER_CONFIRMATION", AWAITING_SELLER_CONFIRMATION),
+        ("AWAITING_PAYMENT", AWAITING_PAYMENT),
+        ("AWAITING_SHIPPING", AWAITING_SHIPPING),
+        ("SHIPPED", SHIPPED),
+        ("REFUND", REFUND),
+        ("COMPLETED", COMPLETED),
     )
 
     state = models.CharField(choices=STATE, db_index=True, default=AWAITING_SELLER_CONFIRMATION, max_length=100)

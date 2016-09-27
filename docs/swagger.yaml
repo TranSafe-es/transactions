@@ -15,14 +15,14 @@ basePath: /api/v1
 produces:
   - application/json
 paths:
-  /transaction/rw:
+  /transaction/details/{id}/:
     get:
       summary: Get details about the transaction of one object between a seller and a buyer
       description: |
         This endpoint returns the state of a given transaction for an object that is bought by a buyer and a seller.
       parameters:
         - name: id
-          in: query
+          in: path
           description: ID of the transaction in our system.
           required: true
           type: number
@@ -36,6 +36,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /transaction/new/:
     post:
       summary: Add a transaction between a buyer and a seller for a given object
       description: Creates a transaction for a given object that is part of a transaction between a seller and a buyer
@@ -52,12 +53,22 @@ paths:
           required: true
           type: string
           format: uuid
-        - name: object_id
+        - name: object_uuid
           in: query
           description: The object id in the system
           required: true
           type: string
           format: uuid
+        - name: price
+          in: query
+          type: number
+          format: float
+          description: The object price
+        - name: state
+          in: query
+          description: The transaction state
+          required: true
+          type: string
       tags:
         - Transactions
       responses:
@@ -92,27 +103,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: "#/definitions/Error"
-  /transaction/help:
-    post:
-      summary: Ask for help of the costumer service for a given transaction
-      description: This endpoint will create a channel between tha buyer, seller and TranSafe for a given transaction
-      parameters:
-        - name: transaction_id
-          in: query
-          description: The transaction id
-          required: true
-          type: string
-          format: uuid
-      tags:
-        - Transactions
-      responses:
-        200:
-          description: Successfull message
-        default:
-          description: Unexpected error
-          schema:
-            $ref: "#/definitions/Error"
-  /transaction/history:
+  /transaction/history/{user_uuid}/:
     get:
       summary: For a given user return the list of transactions of that user in the past
       description: This endpoint returns the list of transactions made in the past by a given user, as a seller or buyer and the stats of that transactions.
@@ -122,11 +113,6 @@ paths:
           type: string
           format: uuid
           description: The user uuid
-        - name: limit
-          in: query
-          type: integer
-          format: int32
-          description: Number of items to retrieve. Default is 5, maximum is 100.
       tags:
         - Transactions
       responses:
@@ -136,38 +122,39 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /object/rw:
+  /object/details/{object_id}:
     get:
-      summary: For a given user, list of objects that were created by the user
-      description: For a given user, this endpoint will show the list of objects that one user created
+      summary: For a given object, list the details about that objects
+      description: For a given object, list the details about that objects
       parameters:
-        - name: user
-          in: query
+        - name: object_id
+          in: path
           type: string
           format: uuid
-          description: The user uuid
+          description: The object uuid
       tags:
         - Objects
       responses:
         200:
-          description: The list of object for a given user
+          description: The list of details for a given object
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /object/new:
     post:
       summary: Create a object in the system for the user
       description: This endpoint will create a object for a given user
       parameters:
-        - name: object_name
+        - name: user_uuid
+          in: query
+          type: string
+          format: uuid
+          description: The user uuid that wants this project
+        - name: name
           in: query
           type: string
           description: The object name
-        - name: price
-          in: query
-          type: number
-          format: float
-          description: The object price
         - name: url
           in: query
           type: string
@@ -177,6 +164,25 @@ paths:
       responses:
         200:
           description: The object id
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /object/list/{user_uuid}:
+    get:
+      summary: For a given user, list of objects that were created by the user
+      description: For a given user, this endpoint will show the list of objects that one user created
+      parameters:
+        - name: user_uuid
+          in: path
+          type: string
+          format: uuid
+          description: The user uuid
+      tags:
+        - Objects
+      responses:
+        200:
+          description: The list of object for a given user
         default:
           description: Unexpected error
           schema:
