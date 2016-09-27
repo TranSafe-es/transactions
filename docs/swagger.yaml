@@ -15,7 +15,7 @@ basePath: /api/v1
 produces:
   - application/json
 paths:
-  /transaction:
+  /transaction/rw:
     get:
       summary: Get details about the transaction of one object between a seller and a buyer
       description: |
@@ -136,7 +136,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /object:
+  /object/rw:
     get:
       summary: For a given user, list of objects that were created by the user
       description: For a given user, this endpoint will show the list of objects that one user created
