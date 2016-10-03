@@ -12,26 +12,26 @@ class ObjectsTestCase(TestCase):
 
         # create object
 
-        buyer_uuid = str(uuid.uuid4())
+        to_uuid = str(uuid.uuid4())
 
         url = "/api/v1/object/new/"
         data = {'name': 'Lote Terreno Hotel ou similar Alto Alentejo Marvao - Proje. Aprovado',
                 'url': 'https://www.olx.pt/anuncio/lote-terreno-hotel-ou-similar-alto-alentejo-marvo-proje-aprovado-IDzGYf3.html#d62794f553;promoted',
-                'user_uuid': buyer_uuid}
+                'identifier': to_uuid}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 201)
 
-        seller_uuid = str(uuid.uuid4())
+        from_uuid = str(uuid.uuid4())
         object_uuid = response.data["id"]
 
         # create transaction
 
         url = "/api/v1/transaction/new/"
-        data = {'buyer_uuid': buyer_uuid,
-                'seller_uuid': seller_uuid,
+        data = {'to_uuid': to_uuid,
+                'from_uuid': from_uuid,
                 'object_uuid': object_uuid,
                 'price': 21.2,
-                'state': "AWAITING_SELLER_CONFIRMATION"}
+                'state': "AWAITING_CONFIRMATION"}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 201)
 
@@ -43,19 +43,19 @@ class ObjectsTestCase(TestCase):
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
 
-        # transaction history as seller
+        # transaction history as from
 
-        url = "/api/v1/transaction/history/"+seller_uuid+"/"
+        url = "/api/v1/transaction/history/"+from_uuid+"/"
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data["as_seller"]), 1)
+        self.assertEqual(len(response.data["from_uuid"]), 1)
 
-        # transaction history as buyer
+        # transaction history as to
 
-        url = "/api/v1/transaction/history/"+buyer_uuid+"/"
+        url = "/api/v1/transaction/history/"+to_uuid+"/"
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data["as_buyer"]), 1)
+        self.assertEqual(len(response.data["to_uuid"]), 1)
 
         # update transaction state
 

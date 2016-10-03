@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from objects.models import Object
-import uuid
 
 
 class ObjectSerializer(serializers.ModelSerializer):
@@ -12,9 +11,9 @@ class ObjectSerializer(serializers.ModelSerializer):
 
 
 class ObjectCreateSerializer(serializers.ModelSerializer):
-    user_uuid = serializers.CharField(max_length=128)
+    identifier = serializers.CharField(max_length=128)
 
     class Meta:
         model = Object
-        fields = ('id', 'name', 'url', 'user_uuid', 'created_at', 'updated_at',)
+        fields = ('id', 'name', 'url', 'identifier', 'created_at', 'updated_at',)
         read_only_fields = ('id', 'created_at', 'updated_at',)

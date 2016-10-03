@@ -17,15 +17,15 @@ class TransactionDetails(views.APIView):
 class TransactionHistory(views.APIView):
 
     @staticmethod
-    def get(request, user_uuid):
-        as_buyer = Transactions.objects.filter(buyer_uuid=user_uuid)
-        as_seller = Transactions.objects.filter(seller_uuid=user_uuid)
+    def get(request, identifier):
+        to_uuid = Transactions.objects.filter(to_uuid=identifier)
+        from_uuid = Transactions.objects.filter(from_uuid=identifier)
 
-        serializer_response_as_buyer = TransactionsSerializer(as_buyer, many=True)
-        serializer_response_as_seller = TransactionsSerializer(as_seller, many=True)
+        serializer_response_to_uuid = TransactionsSerializer(to_uuid, many=True)
+        serializer_response_from_uuid = TransactionsSerializer(from_uuid, many=True)
 
-        return Response({"as_buyer": serializer_response_as_buyer.data,
-                         "as_seller": serializer_response_as_seller.data},
+        return Response({"to_uuid": serializer_response_to_uuid.data,
+                         "from_uuid": serializer_response_from_uuid.data},
                         status=status.HTTP_200_OK)
 
 
@@ -38,8 +38,8 @@ class CreateTransaction(views.APIView):
         if serializer.is_valid():
             obj = get_object_or_404(Object.objects.all(), id=serializer.validated_data['object_uuid'])
 
-            trans = Transactions.objects.create(buyer_uuid=serializer.validated_data['buyer_uuid'],
-                                                seller_uuid=serializer.validated_data['seller_uuid'],
+            trans = Transactions.objects.create(to_uuid=serializer.validated_data['to_uuid'],
+                                                from_uuid=serializer.validated_data['from_uuid'],
                                                 object=obj,
                                                 price=serializer.validated_data['price'],
                                                 state=serializer.validated_data['state'])

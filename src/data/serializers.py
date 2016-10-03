@@ -8,7 +8,7 @@ class TransactionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transactions
-        fields = ('id', 'buyer_uuid', 'seller_uuid', 'object', 'price', 'state', 'created_at', 'updated_at',)
+        fields = ('id', 'to_uuid', 'from_uuid', 'object', 'price', 'state', 'created_at', 'updated_at',)
         read_only_fields = ('id', 'created_at', 'updated_at',)
 
 
@@ -17,7 +17,7 @@ class TransactionsSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = Transactions
-        fields = ('buyer_uuid', 'seller_uuid', 'object_uuid', 'price', 'state',)
+        fields = ('to_uuid', 'from_uuid', 'object_uuid', 'price', 'state',)
         read_only_fields = ()
 
 

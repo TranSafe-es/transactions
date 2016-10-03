@@ -17,9 +17,9 @@ produces:
 paths:
   /transaction/details/{id}/:
     get:
-      summary: Get details about the transaction of one object between a seller and a buyer
+      summary: Get details about the transaction of one object between a identifier and a identifier
       description: |
-        This endpoint returns the state of a given transaction for an object that is bought by a buyer and a seller.
+        This endpoint returns the state of a given transaction for an object that is bought by a identifier and a identifier.
       parameters:
         - name: id
           in: path
@@ -38,18 +38,18 @@ paths:
             $ref: '#/definitions/Error'
   /transaction/new/:
     post:
-      summary: Add a transaction between a buyer and a seller for a given object
-      description: Creates a transaction for a given object that is part of a transaction between a seller and a buyer
+      summary: Add a transaction between a identifier and a identifier for a given object
+      description: Creates a transaction for a given object that is part of a transaction between a identifier and a identifier
       parameters:
-        - name: buyer_uuid
+        - name: to_uuid
           in: query
-          description: The buyer uuid
+          description: The to uuid
           required: true
           type: string
           format: uuid
-        - name: seller_uuid
+        - name: from_uuid
           in: query
-          description: The seller uuid
+          description: The from uuid
           required: true
           type: string
           format: uuid
@@ -81,7 +81,7 @@ paths:
   /transaction/state:
     post:
       summary: Change the state for a given transaction
-      description: This endpoint will change the state of a given transaction between a seller and a buyer
+      description: This endpoint will change the state of a given transaction between a identifier and a identifier
       parameters:
         - name: transaction_id
           in: query
@@ -103,21 +103,21 @@ paths:
           description: Unexpected error
           schema:
             $ref: "#/definitions/Error"
-  /transaction/history/{user_uuid}/:
+  /transaction/history/{identifier}/:
     get:
-      summary: For a given user return the list of transactions of that user in the past
-      description: This endpoint returns the list of transactions made in the past by a given user, as a seller or buyer and the stats of that transactions.
+      summary: For a given identifier return the list of transactions of that identifier in the past
+      description: This endpoint returns the list of transactions made in the past by a given identifier, as a identifier or identifier and the stats of that transactions.
       parameters:
-        - name: user_uuid
+        - name: identifier
           in: query
           type: string
           format: uuid
-          description: The user uuid
+          description: The identifier uuid
       tags:
         - Transactions
       responses:
         200:
-          description: History information for the given user
+          description: History information for the given identifier
         default:
           description: Unexpected error
           schema:
@@ -130,7 +130,6 @@ paths:
         - name: object_id
           in: path
           type: string
-          format: uuid
           description: The object uuid
       tags:
         - Objects
@@ -143,14 +142,14 @@ paths:
             $ref: '#/definitions/Error'
   /object/new:
     post:
-      summary: Create a object in the system for the user
-      description: This endpoint will create a object for a given user
+      summary: Create a object in the system for the identifier
+      description: This endpoint will create a object for a given identifier
       parameters:
-        - name: user_uuid
+        - name: identifier
           in: query
           type: string
           format: uuid
-          description: The user uuid that wants this project
+          description: The identifier uuid that wants this project
         - name: name
           in: query
           type: string
@@ -168,21 +167,20 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /object/list/{user_uuid}:
+  /object/list/{identifier}:
     get:
-      summary: For a given user, list of objects that were created by the user
-      description: For a given user, this endpoint will show the list of objects that one user created
+      summary: For a given identifier, list of objects that were created
+      description: For a given identifier, this endpoint will show the list of objects that one identifier created
       parameters:
-        - name: user_uuid
+        - name: identifier
           in: path
           type: string
-          format: uuid
-          description: The user uuid
+          description: The identifier uuid
       tags:
         - Objects
       responses:
         200:
-          description: The list of object for a given user
+          description: The list of object for a given identifier
         default:
           description: Unexpected error
           schema:

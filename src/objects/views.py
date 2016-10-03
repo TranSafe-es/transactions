@@ -1,6 +1,6 @@
 # coding=utf-8
 from rest_framework import views, status
-from .models import Object, ObjectByUser
+from .models import Object, ObjectByIdentifier
 from .serializers import ObjectSerializer, ObjectCreateSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -17,8 +17,8 @@ class ShowDetails(views.APIView):
 class ListObjects(views.APIView):
 
     @staticmethod
-    def get(request, user):
-        list_objects = [row.object for row in ObjectByUser.objects.filter(user_uuid=user)]
+    def get(request, identifier):
+        list_objects = [row.object for row in ObjectByIdentifier.objects.filter(identifier=identifier)]
         serializer_response = ObjectSerializer(list_objects, many=True)
         return Response(serializer_response.data, status=status.HTTP_200_OK)
 
@@ -38,8 +38,8 @@ class CreateObject(views.APIView):
             else:
                 obj = Object.objects.create(name=serializer.validated_data['name'],
                                             url=serializer.validated_data['url'])
-                ObjectByUser.objects.create(user_uuid=serializer.validated_data['user_uuid'],
-                                            object=obj)
+                ObjectByIdentifier.objects.create(identifier=serializer.validated_data['identifier'],
+                                                  object=obj)
 
                 serializer_response = ObjectSerializer(obj)
                 return Response(serializer_response.data, status=status.HTTP_201_CREATED)

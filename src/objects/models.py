@@ -11,7 +11,7 @@ class Object(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class ObjectByUser(models.Model):
-    user_uuid = models.CharField(max_length=128, default=uuid.uuid4, blank=False)
+class ObjectByIdentifier(models.Model):
+    identifier = models.CharField(max_length=128, default=uuid.uuid4, blank=False)
     object = models.ForeignKey('Object', blank=False)
 
