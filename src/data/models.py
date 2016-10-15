@@ -5,8 +5,8 @@ import uuid
 
 class Transactions(models.Model):
     id = models.CharField(max_length=128, default=uuid.uuid4, blank=False, unique=True, primary_key=True)
-    to_uuid = models.CharField(max_length=128, default=uuid.uuid4, blank=False, unique=True)
-    from_uuid = models.CharField(max_length=128, default=uuid.uuid4, blank=False, unique=True)
+    to_uuid = models.CharField(max_length=128, default=uuid.uuid4, blank=False)
+    from_uuid = models.CharField(max_length=128, default=uuid.uuid4, blank=False)
     object = models.ForeignKey(Object, blank=False)
     price = models.FloatField(blank=False)
 
