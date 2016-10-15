@@ -21,6 +21,13 @@ class ObjectsTestCase(TestCase):
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 201)
 
+        url = "/api/v1/object/new/"
+        data = {'name': 'Lote Terreno Hotel ou similar Alto Alentejo Marvao - Proje. Aprovado',
+                'url': 'https://www.olx.pt/anuncio/lote-terreno-hotel-ou-similar-alto-alentejo-marvo-proje-aprovado-IDzGYf3.html#d62794f553;promoted',
+                'identifier': to_uuid}
+        response = client.post(path=url, data=data)
+        self.assertEqual(response.status_code, 302)
+
         from_uuid = str(uuid.uuid4())
         object_uuid = response.data["id"]
 

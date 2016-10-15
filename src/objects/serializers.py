@@ -12,6 +12,7 @@ class ObjectSerializer(serializers.ModelSerializer):
 
 class ObjectCreateSerializer(serializers.ModelSerializer):
     identifier = serializers.CharField(max_length=128)
+    url = serializers.URLField()
 
     class Meta:
         model = Object
