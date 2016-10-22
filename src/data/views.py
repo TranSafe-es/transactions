@@ -61,6 +61,7 @@ class UpdateTransactionState(views.APIView):
         if serializer.is_valid():
             trans = get_object_or_404(Transactions.objects.all(), id=serializer.validated_data['transaction_id'])
             trans.state = serializer.validated_data['state']
+            trans.save()
             serializer_response = TransactionsSerializer(trans)
             return Response(serializer_response.data, status=status.HTTP_200_OK)
 
