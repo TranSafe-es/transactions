@@ -1,0 +1,9 @@
+sudo chmod -x /etc/update-motd.d/*
+vim /etc/motd
+Print login false
+Print motd false
++----------------------------+
+|                            |
+|         Composer VM        |
+|                            |
++----------------------------+
