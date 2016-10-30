@@ -1,7 +1,8 @@
 # coding=utf-8
 from rest_framework import views, status
 from .models import Transactions, Object
-from .serializers import TransactionsSerializer, TransactionsSerializerCreate, TransactionsSerializerState
+from .serializers import TransactionsSerializer, TransactionsSerializerCreate, TransactionsSerializerState, \
+    TransactionTrackingCode
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
@@ -15,6 +16,21 @@ class TransactionDetails(views.APIView):
 
 
 class TransactionHistory(views.APIView):
+
+    @staticmethod
+    def get(request, identifier):
+        to_uuid = Transactions.objects.filter(to_uuid=identifier)
+        from_uuid = Transactions.objects.filter(from_uuid=identifier)
+
+        serializer_response_to_uuid = TransactionsSerializer(to_uuid, many=True)
+        serializer_response_from_uuid = TransactionsSerializer(from_uuid, many=True)
+
+        return Response({"to_uuid": serializer_response_to_uuid.data,
+                         "from_uuid": serializer_response_from_uuid.data},
+                        status=status.HTTP_200_OK)
+
+
+class TransactionStats(views.APIView):
 
     @staticmethod
     def get(request, identifier):
@@ -61,6 +77,24 @@ class UpdateTransactionState(views.APIView):
         if serializer.is_valid():
             trans = get_object_or_404(Transactions.objects.all(), id=serializer.validated_data['transaction_id'])
             trans.state = serializer.validated_data['state']
+            trans.save()
+            serializer_response = TransactionsSerializer(trans)
+            return Response(serializer_response.data, status=status.HTTP_200_OK)
+
+        return Response({'status': 'Bad request',
+                         'message': 'The data that you send is invalid!'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+
+class TrackingCode(views.APIView):
+
+    @staticmethod
+    def post(request):
+        serializer = TransactionTrackingCode(data=request.data)
+
+        if serializer.is_valid():
+            trans = get_object_or_404(Transactions.objects.all(), id=serializer.validated_data['transaction_id'])
+            trans.tracking_code = serializer.validated_data['tracking_code']
             trans.save()
             serializer_response = TransactionsSerializer(trans)
             return Response(serializer_response.data, status=status.HTTP_200_OK)

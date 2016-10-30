@@ -10,6 +10,8 @@ class Transactions(models.Model):
     object = models.ForeignKey(Object, blank=False)
     price = models.FloatField(blank=False)
 
+    tracking_code = models.CharField(max_length=128)
+
     AWAITING_CONFIRMATION = "Awaiting confirmation"
     AWAITING_PAYMENT = "Awaiting payment"
     AWAITING_SHIPPING = "Awaiting shipping"

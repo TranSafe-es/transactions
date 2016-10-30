@@ -80,3 +80,10 @@ class ObjectsTestCase(TestCase):
                 'state': "REFUND"}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 200)
+
+        # add tracking code
+        url = "/api/v1/transaction/tracking_code/"
+        data = {'transaction_id': transaction_uuid,
+                'tracking_code': "OC144693436PT"}
+        response = client.post(path=url, data=data)
+        self.assertEqual(response.status_code, 200)

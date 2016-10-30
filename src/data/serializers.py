@@ -8,8 +8,8 @@ class TransactionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transactions
-        fields = ('id', 'to_uuid', 'from_uuid', 'object', 'price', 'state', 'created_at', 'updated_at',)
-        read_only_fields = ('id', 'created_at', 'updated_at',)
+        fields = ('id', 'to_uuid', 'from_uuid', 'object', 'tracking_code', 'price', 'state', 'created_at', 'updated_at',)
+        read_only_fields = ('id', 'tracking_code', 'created_at', 'updated_at',)
 
 
 class TransactionsSerializerCreate(serializers.ModelSerializer):
@@ -27,4 +27,13 @@ class TransactionsSerializerState(serializers.ModelSerializer):
     class Meta:
         model = Transactions
         fields = ('state', 'transaction_id')
+        read_only_fields = ()
+
+
+class TransactionTrackingCode(serializers.ModelSerializer):
+    transaction_id = serializers.CharField(max_length=128)
+
+    class Meta:
+        model = Transactions
+        fields = ('transaction_id', 'tracking_code',)
         read_only_fields = ()
