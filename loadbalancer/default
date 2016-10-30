@@ -1,12 +1,12 @@
 server {
     listen      80;
-    server_name http://payments.transafe.rafaelferreira.pt;
+    server_name payments.transafe.rafaelferreira.pt;
 	  return 301 https://$host$request_uri;
 }
 
 server {
     listen      443 ssl;
-    server_name https://payments.transafe.rafaelferreira.pt;
+    server_name payments.transafe.rafaelferreira.pt;
     ssl_certificate /root/certificados/payments.transafe.rafaelferreira.pt/1_payments.transafe.rafaelferreira.pt_bundle.crt;
     ssl_certificate_key /root/certificados/payments.transafe.rafaelferreira.pt/payments.transafe.rafaelferreira.pt.key;
 
@@ -17,13 +17,13 @@ server {
 
 server {
     listen      80;
-    server_name http://im.transafe.rafaelferreira.pt;
+    server_name im.transafe.rafaelferreira.pt;
 	  return 301 https://$host$request_uri;
 }
 
 server {
     listen      443 ssl;
-    server_name https://im.transafe.rafaelferreira.pt;
+    server_name im.transafe.rafaelferreira.pt;
     ssl_certificate /root/certificados/im.transafe.rafaelferreira.pt/1_im.transafe.rafaelferreira.pt_bundle.crt;
     ssl_certificate_key /root/certificados/im.transafe.rafaelferreira.pt/im.transafe.rafaelferreira.pt.key;
 
@@ -35,13 +35,13 @@ server {
 
 server {
     listen       80;
-    server_name http://transafe.rafaelferreira.pt;
+    server_name transafe.rafaelferreira.pt;
 	  return 301 https://$host$request_uri;
 }
 
 server {
     listen      443 ssl;
-    server_name https://transafe.rafaelferreira.pt;
+    server_name transafe.rafaelferreira.pt;
     ssl_certificate /root/certificados/transafe.rafaelferreira.pt/1_transafe.rafaelferreira.pt_bundle.crt;
     ssl_certificate_key /root/certificados/transafe.rafaelferreira.pt/transafe.rafaelferreira.pt.key;
 
