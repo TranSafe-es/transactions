@@ -1,5 +1,6 @@
 from django.db import models
 from objects.models import Object
+from register.models import AppRegister
 import uuid
 
 
@@ -29,6 +30,8 @@ class Transactions(models.Model):
     )
 
     state = models.CharField(choices=STATE, db_index=True, default=AWAITING_CONFIRMATION, max_length=100)
+
+    app = models.ForeignKey(AppRegister, blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
