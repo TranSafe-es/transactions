@@ -10,18 +10,23 @@ class ObjectsTestCase(TestCase):
     def test_objects(self):
         client = APIClient()
 
-        # create object
+        app_name = "teste"
+        url = "/api/v1/register/app/"
+        data = {"name": app_name}
+        response = client.post(path=url, data=data)
+        token = response.data["token"]
 
         to_uuid = str(uuid.uuid4())
 
-        url = "/api/v1/object/new/"
+        # create object
+        url = "/api/v1/object/new/?token="+token
         data = {'name': 'Lote Terreno Hotel ou similar Alto Alentejo Marvao - Proje. Aprovado',
                 'url': 'https://www.olx.pt/anuncio/lote-terreno-hotel-ou-similar-alto-alentejo-marvo-proje-aprovado-IDzGYf3.html#d62794f553;promoted',
                 'identifier': to_uuid}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 201)
 
-        url = "/api/v1/object/new/"
+        url = "/api/v1/object/new/?token="+token
         data = {'name': 'Lote Terreno Hotel ou similar Alto Alentejo Marvao - Proje. Aprovado',
                 'url': 'https://www.olx.pt/anuncio/lote-terreno-hotel-ou-similar-alto-alentejo-marvo-proje-aprovado-IDzGYf3.html#d62794f553;promoted',
                 'identifier': to_uuid}
@@ -33,7 +38,7 @@ class ObjectsTestCase(TestCase):
 
         # create transaction
 
-        url = "/api/v1/transaction/new/"
+        url = "/api/v1/transaction/new/?token="+token
         data = {'to_uuid': to_uuid,
                 'from_uuid': from_uuid,
                 'object_uuid': object_uuid,
@@ -42,7 +47,7 @@ class ObjectsTestCase(TestCase):
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 201)
 
-        url = "/api/v1/transaction/new/"
+        url = "/api/v1/transaction/new/?token="+token
         data = {'to_uuid': to_uuid,
                 'from_uuid': from_uuid,
                 'object_uuid': object_uuid,
@@ -55,34 +60,34 @@ class ObjectsTestCase(TestCase):
 
         # transaction details
 
-        url = "/api/v1/transaction/details/" + transaction_uuid + "/"
+        url = "/api/v1/transaction/details/" + transaction_uuid + "/?token="+token
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
 
         # transaction history as from
 
-        url = "/api/v1/transaction/history/"+from_uuid+"/"
+        url = "/api/v1/transaction/history/"+from_uuid+"/?token="+token
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data["from_uuid"]), 2)
 
         # transaction history as to
 
-        url = "/api/v1/transaction/history/"+to_uuid+"/"
+        url = "/api/v1/transaction/history/"+to_uuid+"/?token="+token
         response = client.get(path=url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data["to_uuid"]), 2)
 
         # update transaction state
 
-        url = "/api/v1/transaction/state/"
+        url = "/api/v1/transaction/state/?token="+token
         data = {'transaction_id': transaction_uuid,
                 'state': "REFUND"}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 200)
 
         # add tracking code
-        url = "/api/v1/transaction/tracking_code/"
+        url = "/api/v1/transaction/tracking_code/?token="+token
         data = {'transaction_id': transaction_uuid,
                 'tracking_code': "OC144693436PT"}
         response = client.post(path=url, data=data)

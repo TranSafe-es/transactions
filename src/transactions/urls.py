@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 from data.urls import urlpatterns as dataurls
 from objects.urls import urlpatterns as objectsurls
+from register.urls import urlpatterns as registerurls
+
 
 urlpatterns = [
                url(r'^admin/', include(admin.site.urls)),
@@ -11,6 +13,7 @@ urlpatterns = [
                # pages
                url(r'^api/v1/transaction/', include(dataurls)),
                url(r'^api/v1/object/', include(objectsurls)),
+               url(r'^api/v1/register/', include(registerurls)),
 
                url('^.*$', TemplateView.as_view(template_name='index.html'), name='index')
                ]
