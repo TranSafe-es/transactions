@@ -122,6 +122,21 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /transaction/stats/:
+    get:
+      summary: Stats globals
+      description: Number of transactions, total value of transactions and number of refunded
+      tags:
+        - Transactions
+      responses:
+        200:
+          description: Global stats
+          schema:
+            $ref: '#/definitions/TransactionStats'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /object/details/{object_id}:
     get:
       summary: For a given object, list the details about that objects
@@ -186,6 +201,18 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
+  SubHall:
+    type: object
+    properties:
+      number_of_transactions:
+        type: integer
+        description: Number of transactions
+      total_value:
+        type: integer
+        description: Total value
+      number_of_refunded:
+        type: integer
+        description: number of refunded
   Error:
     type: object
     properties:
