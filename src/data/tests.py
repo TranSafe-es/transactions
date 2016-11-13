@@ -92,3 +92,8 @@ class ObjectsTestCase(TestCase):
                 'tracking_code': "OC144693436PT"}
         response = client.post(path=url, data=data)
         self.assertEqual(response.status_code, 200)
+
+        # get stats about the transactions
+        url = "/api/v1/transaction/stats/?token="+token
+        response = client.get(path=url)
+        self.assertEqual(response.status_code, 200)

@@ -6,6 +6,7 @@ from .serializers import TransactionsSerializer, TransactionsSerializerCreate, T
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from register.permissions import verify_token
+from django.db.models import Sum
 
 
 class TransactionDetails(views.APIView):
@@ -17,6 +18,17 @@ class TransactionDetails(views.APIView):
         serializer_response = TransactionsSerializer(get_object_or_404(Transactions.objects.all(), id=transaction_id,
                                                                        app=app))
         return Response(serializer_response.data, status=status.HTTP_200_OK)
+
+
+class TransactionsStats(views.APIView):
+
+    @staticmethod
+    def get(request):
+        return Response({
+            "number_of_transactions": Transactions.objects.all().count(),
+            "total_value": Transactions.objects.aggregate(Sum('price')),
+            "number_of_refunded": Transactions.objects.filter(state="REFUND").count()
+        }, status=status.HTTP_200_OK)
 
 
 class TransactionHistory(views.APIView):

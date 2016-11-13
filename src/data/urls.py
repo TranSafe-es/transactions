@@ -1,5 +1,6 @@
 from django.conf.urls import url
-from .views import TransactionDetails, TransactionHistory, CreateTransaction, UpdateTransactionState, TrackingCode
+from .views import TransactionDetails, TransactionHistory, CreateTransaction, UpdateTransactionState, TrackingCode, \
+    TransactionsStats
 
 urlpatterns = [
                url(r'^details/(?P<transaction_id>.+)/$', TransactionDetails.as_view(), name="Show details"),
@@ -7,4 +8,5 @@ urlpatterns = [
                url(r'^new/$', CreateTransaction.as_view(), name="Create transaction"),
                url(r'^state/$', UpdateTransactionState.as_view(), name="Update transaction state"),
                url(r'^tracking_code/$', TrackingCode.as_view(), name="Add tracking code to transaction"),
+               url(r'^stats/$', TransactionsStats.as_view(), name="Transactions stats"),
 ]

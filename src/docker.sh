@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 docker rm -f order-tracker
 docker build -t rfpt/order-tracker .
+
+rc=$?;
+if [[ $rc != 0 ]];
+then
+exit $rc;
+fi
+
 docker run -d --name order-tracker --restart always -p 80:80 rfpt/order-tracker
 
 # install:
