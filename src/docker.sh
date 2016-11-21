@@ -8,7 +8,13 @@ then
 exit $rc;
 fi
 
-docker run -d --name order-tracker --restart always -p 80:80 rfpt/order-tracker
+
+if [[ $HOSTNAME == "ubuntu" ]];
+then
+    docker run -d --name order-tracker --restart always -p 80:80 rfpt/order-tracker
+else
+    docker run -d --name order-tracker --restart always -p 8080:80 rfpt/order-tracker
+fi
 
 # install:
 # apt-get -y install docker.io
